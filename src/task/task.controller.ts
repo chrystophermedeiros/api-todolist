@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put, Query } from '@nestjs/common';
 import { TaskDto } from './task.dto';
 import { TaskService } from './task.service';
 
@@ -21,5 +21,10 @@ export class TaskController {
     console.log(`Buscando tarefas com status: ${status}`);
     return this.taskService.findStatus(status);
     
+  }
+
+  @Put()
+  update(@Body() task: TaskDto) {
+    this.taskService.update(task);
   }
 }
