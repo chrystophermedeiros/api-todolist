@@ -19,5 +19,16 @@ export class TaskService {
        throw new HttpException(`Task with id ${id} not found`,HttpStatus.NOT_FOUND);
           
         
-    }      
+    }
+    findStatus(status: string): TaskDto[]  {
+        const foundTaskStatus = this.tasks.filter(statu => statu.status === status);
+        
+           if (foundTaskStatus.length) {
+            return foundTaskStatus;
+           }
+           console.log(foundTaskStatus);
+    
+           throw new HttpException(`Task with status ${status} not found`,HttpStatus.NOT_FOUND);
+                
+        }       
 }
