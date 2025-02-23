@@ -14,4 +14,10 @@ export class UsersService {
   findByUSerEmail(email: string): UserDto | null {
     return this.users.find(user => user.email === email) || null;
   }
+
+  findById(id: string): UserDto | null {
+    return this.users.find(user => user.id === id) || null;
+  }
+
+  
 }
