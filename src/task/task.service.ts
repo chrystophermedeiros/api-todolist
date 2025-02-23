@@ -1,5 +1,5 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { TaskDto } from './task.dto';
+import { FindAllParameters, TaskDto } from './task.dto';
 
 @Injectable()
 export class TaskService {
@@ -20,6 +20,19 @@ export class TaskService {
       `Task with id ${id} not found`,
       HttpStatus.NOT_FOUND,
     );
+  }
+
+  findAll(params: FindAllParameters): TaskDto[] {
+    return this.tasks.filter((t) => {
+      let found = true;
+      if (params.title != undefined && !t.title.includes(params.title)) {
+        found = false;
+      }
+      if (params.status != undefined && !t.status.includes(params.status)) {
+        found = false;
+      }
+      return found;
+    });
   }
   findStatus(status: string): TaskDto[] {
     const foundTaskStatus = this.tasks.filter(
@@ -53,7 +66,7 @@ export class TaskService {
     let taskIndex = this.tasks.findIndex((t) => t.id === id);
 
     if (taskIndex >= 0) {
-      this.tasks.splice(taskIndex, 1)
+      this.tasks.splice(taskIndex, 1);
       return taskIndex[0];
     }
 
