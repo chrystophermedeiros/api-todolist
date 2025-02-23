@@ -17,7 +17,7 @@ export class UserDto {
   @IsString()
   @MinLength(4)
   @MaxLength(50)
-  username: string;
+  usernameGitHub: string;
 
   @IsString()
   @MinLength(8)
