@@ -51,7 +51,7 @@ export class TaskService {
   }
 
   update(task: TaskDto) {
-    let index = this.tasks.findIndex((t) => t.id === task.id);
+    const index = this.tasks.findIndex((t) => t.id === task.id);
     if (index >= 0) {
       this.tasks[index] = task;
       return;
@@ -63,7 +63,7 @@ export class TaskService {
   }
 
   remove(id: string) {
-    let taskIndex = this.tasks.findIndex((t) => t.id === id);
+    const taskIndex = this.tasks.findIndex((t) => t.id === id);
 
     if (taskIndex >= 0) {
       this.tasks.splice(taskIndex, 1);

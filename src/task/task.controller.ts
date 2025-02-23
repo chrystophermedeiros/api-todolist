@@ -1,4 +1,13 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  Query,
+} from '@nestjs/common';
 import { FindAllParameters, TaskDto } from './task.dto';
 import { TaskService } from './task.service';
 
@@ -19,14 +28,12 @@ export class TaskController {
   @Get()
   findAll(@Query() Params: FindAllParameters): TaskDto[] {
     return this.taskService.findAll(Params);
-    
   }
 
   @Get()
   findByStatus(@Query('status') status: string): TaskDto[] {
     console.log(`Buscando tarefas com status: ${status}`);
     return this.taskService.findStatus(status);
-    
   }
 
   @Put()
