@@ -11,4 +11,7 @@ export class UsersService {
     this.users.push(newUser);
     console.log(this.users);
   }
+  findByUSerEmail(email: string): UserDto | null {
+    return this.users.find(user => user.email === email) || null;
+  }
 }
