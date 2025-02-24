@@ -9,10 +9,10 @@ export class SessionController {
 
   @HttpCode(HttpStatus.OK)
   @Post('login')
-  singIn(
+ async singIn(
     @Body('email') email: string,
     @Body('password') password: string,
-  ): SessionResponseDto {
-    return this.sessionService.singIn(email, password);
+  ): Promise<SessionResponseDto> {
+    return await this.sessionService.singIn(email, password);
   }
 }

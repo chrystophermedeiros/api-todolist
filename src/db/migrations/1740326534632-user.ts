@@ -12,7 +12,6 @@ export class User1740326534632 implements MigrationInterface {
                 email varchar(255) NOT NULL,
                 CONSTRAINT user_pk_id PRIMARY KEY (id),
                 CONSTRAINT user_un_email UNIQUE (email),
-                CONSTRAINT user_un_name UNIQUE (name),
                 CONSTRAINT user_un_username_github UNIQUE (username_github)  
             )
         `);

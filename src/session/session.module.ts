@@ -4,6 +4,7 @@ import { SessionController } from './session.controller';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { UsersModule } from 'src/users/users.module';
+import { JwtStrategy } from './jwt.strategy';
 
 @Module({
   imports: [
@@ -12,12 +13,12 @@ import { UsersModule } from 'src/users/users.module';
       imports: [],
       useFactory: async (configService: ConfigService) => ({
         secret: configService.get<string>('JWT_SECRET'),
-        signOptions: { expiresIn: configService.get<number>('JWT_EXPIRATION') },
+        signOptions: { expiresIn:Number(configService.get<string>('JWT_EXPIRATION'))  },
       }),
       inject: [ConfigService],
     }), UsersModule,
   ],
-  providers: [SessionService],
+  providers: [SessionService, JwtStrategy],
   controllers: [SessionController],
 })
 export class SessionModule {}

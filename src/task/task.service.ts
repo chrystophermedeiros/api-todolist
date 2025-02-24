@@ -1,81 +1,166 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { FindAllParameters, TaskDto, TaskStatusEnum } from './task.dto';
-import { v4 as uuid } from 'uuid';
+import { InjectRepository } from '@nestjs/typeorm';
+import { TaskEntity } from 'src/db/entites/task.entity';
+import { Repository, FindOptionsWhere, Like } from 'typeorm';
 
 @Injectable()
 export class TaskService {
-  private tasks: TaskDto[] = [];
-  create(task: TaskDto) {
-    task.id = uuid();
-    task.status = TaskStatusEnum.PENDING;
-    this.tasks.push(task);
-    console.log(this.tasks);
-  }
+  constructor(
+    @InjectRepository(TaskEntity)
+    private readonly taskRepository: Repository<TaskEntity>,
+  ) {}
+  async create(task: TaskDto): Promise<TaskDto> {
+    task.title = task.title.toUpperCase();
+    task.description = task.description.toUpperCase();
 
-  findById(id: string): TaskDto {
-    const foundTask = this.tasks.filter((t) => t.id === id);
-
-    if (foundTask.length) {
-      return foundTask[0];
-    }
-
-    throw new HttpException(
-      `Task with id ${id} not found`,
-      HttpStatus.NOT_FOUND,
-    );
-  }
-
-  findAll(params: FindAllParameters): TaskDto[] {
-    return this.tasks.filter((t) => {
-      let found = true;
-      if (params.title != undefined && !t.title.includes(params.title)) {
-        found = false;
-      }
-      if (params.status != undefined && !t.status.includes(params.status)) {
-        found = false;
-      }
-      return found;
+    const existingTask = await this.taskRepository.findOne({
+      where: { title: task.title, userId: task.userId },
     });
-  }
-  findStatus(status: string): TaskDto[] {
-    const foundTaskStatus = this.tasks.filter(
-      (statu) => statu.status === status,
-    );
-
-    if (foundTaskStatus.length) {
-      return foundTaskStatus;
-    }
-    console.log(foundTaskStatus);
-
-    throw new HttpException(
-      `Task with status ${status} not found`,
-      HttpStatus.NOT_FOUND,
-    );
-  }
-
-  update(task: TaskDto) {
-    const index = this.tasks.findIndex((t) => t.id === task.id);
-    if (index >= 0) {
-      this.tasks[index] = task;
-      return;
-    }
-    throw new HttpException(
-      `Task with id ${task.id} not found`,
-      HttpStatus.BAD_REQUEST,
-    );
-  }
-
-  remove(id: string) {
-    const taskIndex = this.tasks.findIndex((t) => t.id === id);
-
-    if (taskIndex >= 0) {
-      this.tasks.splice(taskIndex, 1);
-      return taskIndex[0];
+    if (existingTask) {
+      throw {
+        message: 'Cada usuário só pode criar um título único.',
+      };
     }
 
-    throw new HttpException(
-      `Task with id ${id} not found`,
-      HttpStatus.BAD_REQUEST,
-    );
+    const taskToSave: TaskEntity = {
+      title: task.title,
+      description: task.description,
+      expirationDate: task.expirationDate,
+      status: TaskStatusEnum.PENDING,
+      userId: task.userId,
+    };
+
+    if (task.id) {
+      taskToSave.id = task.id;
+    }
+
+    const createdTask = await this.taskRepository.save(taskToSave);
+    return this.mapEntityToDto(createdTask);
+  }
+
+  async findById(id: string, userId: string): Promise<TaskDto> {
+    const foundTask = await this.taskRepository.findOne({ where: { id } });
+
+    if (!foundTask) {
+      throw new HttpException(
+        `Tarefa de id: ${id} não encontrada`,
+        HttpStatus.NOT_FOUND,
+      );
+    }
+
+    if (foundTask.userId !== userId) {
+      throw new HttpException(
+        `Você não tem permissão para visualizar esta tarefa`,
+        HttpStatus.FORBIDDEN,
+      );
+    }
+
+    return this.mapEntityToDto(foundTask);
+  }
+
+  async findAll(params: FindAllParameters, userId: string): Promise<TaskDto[]> {
+    const searchTask: FindOptionsWhere<TaskEntity> = { userId };
+
+    if (params.title) {
+      searchTask.title = Like(`%${params.title}%`);
+    }
+
+    if (params.status) {
+      searchTask.status = params.status;
+    }
+
+    const tasksFound = await this.taskRepository.find({
+      where: searchTask,
+    });
+
+    if (tasksFound.length === 0) {
+      throw new HttpException(
+        'Nenhuma tarefa encontrada para o usuário.',
+        HttpStatus.NOT_FOUND,
+      );
+    }
+
+    return tasksFound.map((taskEntity) => this.mapEntityToDto(taskEntity));
+  }
+
+  async update(id: string, task: TaskDto): Promise<TaskDto> {
+    const foundTask = await this.taskRepository.findOne({ where: { id } });
+
+    if (!foundTask) {
+      throw new HttpException(
+        `Task with id ${id} not found`,
+        HttpStatus.NOT_FOUND,
+      );
+    }
+
+    if (foundTask.userId !== task.userId) {
+      throw new HttpException(
+        `Você não tem permissão para editar esta tarefa`,
+        HttpStatus.FORBIDDEN,
+      );
+    }
+
+    await this.taskRepository.update(id, this.mapDtoToEntity(task));
+
+    const updatedTask = await this.taskRepository.findOne({ where: { id } });
+
+    if (!updatedTask) {
+      throw new HttpException(
+        `Erro ao recuperar a tarefa atualizada`,
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+
+    return this.mapEntityToDto(updatedTask);
+  }
+
+  async remove(id: string, userId: string) {
+    const foundTask = await this.taskRepository.findOne({ where: { id } });
+
+    if (!foundTask) {
+      throw new HttpException(
+        `Tarefa de id: ${id} não encontrada`,
+        HttpStatus.NOT_FOUND,
+      );
+    }
+
+    if (foundTask.userId !== userId) {
+      throw new HttpException(
+        `Você não tem permissão para excluir esta tarefa`,
+        HttpStatus.FORBIDDEN,
+      );
+    }
+
+    const result = await this.taskRepository.delete(id);
+
+    if (!result.affected) {
+      throw new HttpException(
+        `Erro ao excluir a tarefa`,
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+
+    return { message: 'Tarefa excluída com sucesso!' };
+  }
+
+  private mapEntityToDto(taskEntity: TaskEntity): TaskDto {
+    return {
+      id: taskEntity.id,
+      title: taskEntity.title,
+      description: taskEntity.description,
+      status: taskEntity.status as TaskStatusEnum,
+      expirationDate: taskEntity.expirationDate,
+      userId: taskEntity.userId,
+    };
+  }
+
+  private mapDtoToEntity(taskDto: TaskDto): Partial<TaskEntity> {
+    return {
+      title: taskDto.title,
+      description: taskDto.description,
+      status: taskDto.status,
+      expirationDate: taskDto.expirationDate,
+    };
   }
 }

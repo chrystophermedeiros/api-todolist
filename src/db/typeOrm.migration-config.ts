@@ -1,6 +1,8 @@
 import { ConfigService } from '@nestjs/config';
 import { config } from 'dotenv';
 import { DataSource, DataSourceOptions } from 'typeorm';
+import { UserEntity } from './entites/user.entity';
+import { TaskEntity } from './entites/task.entity';
 
 config();
 
@@ -15,7 +17,7 @@ if (!dbName) {
 const dataSourceOptions: DataSourceOptions = {
     type: 'sqlite',
     database: dbName,
-    entities: [ ],
+    entities: [UserEntity,TaskEntity ],
     migrations: [__dirname + '/migrations/*.ts'],
     synchronize: false,
 };

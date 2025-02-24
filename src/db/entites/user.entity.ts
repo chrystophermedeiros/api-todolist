@@ -6,16 +6,16 @@ export class UserEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-   
-  @Column({ type: 'varchar'})
+  @Column({ type: 'varchar', length: 100 })
   name: string;
 
-  @Column({ type: 'varchar', name: 'username_github'})
+  @Column({ type: 'varchar', length: 100, name: 'username_github' })
   usernameGitHub: string;
 
-  @Column({ type: 'varchar'})
+  @Column({ type: 'varchar', length: 255 })
   email: string;
 
-  @Column({ type: 'varchar', name: 'password_hash'})
+  @Column({ type: 'varchar', length: 255, name: 'password_hash' })
   passwordHash: string;
+  
 }

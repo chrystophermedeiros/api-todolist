@@ -18,16 +18,16 @@ export class SessionService {
     ) ?? 28800;
   }
 
-  singIn(email: string, password: string): SessionResponseDto {
-    const foundUser = this.userService.findByUSerEmail(email);
+  async singIn(email: string, password: string): Promise<SessionResponseDto>  {
+    const foundUser = await this.userService.findByEmailOrUsername(email);
 
-    if (!foundUser || !bcryptCompare(password, foundUser.password)) {
+    if (!foundUser || !bcryptCompare(password, foundUser.passwordHash)) {
       throw new UnauthorizedException('Invalid credentials');
     }
 
     const payload = { sub: foundUser.id, email: foundUser.email };
     const token = this.jwtservice.sign(payload);
 
-    return { token, expiresIn: this.jwtExpirationTimeSeconds };
+    return { token, expiresIn: this.jwtExpirationTimeSeconds, userId: foundUser.id };
   }
 }

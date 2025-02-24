@@ -1,7 +1,5 @@
 import { IsDateString, IsEnum, IsOptional, IsString, IsUUID, MaxLength, MinLength, Validate } from "class-validator";
 
-
-
 export  enum TaskStatusEnum {
   PENDING = "PENDENTE",
   DONE = "CONClUIDA"
@@ -9,7 +7,7 @@ export  enum TaskStatusEnum {
 export class TaskDto {
   @IsUUID()
   @IsOptional()
-  id: string;
+  id?:string;
 
   @IsUUID()
   userId: string;
@@ -26,7 +24,7 @@ export class TaskDto {
 
   @IsEnum(TaskStatusEnum)
   @IsOptional()
-  status: string;
+  status: TaskStatusEnum;
 
   @IsDateString()
   expirationDate: Date;
@@ -37,4 +35,7 @@ export interface FindAllParameters {
   status: string;
 }
 
-
+export class TaskRouteParams {
+  @IsUUID()
+  id: string;
+}
