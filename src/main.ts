@@ -5,6 +5,14 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  app.enableCors({
+    origin: ['http://localhost:3000', 'https://meusite.com'],
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    allowedHeaders: 'Content-Type, Authorization',
+    credentials: true,
+  });
+
   const config = new DocumentBuilder()
     .setTitle('Documentação da API Todolist')
     .setDescription(
@@ -21,8 +29,10 @@ async function bootstrap() {
       'token',
     )
     .build();
+
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('swagger', app, document);
+
   app.useGlobalPipes(new ValidationPipe());
   await app.listen(process.env.PORT ?? 3001);
 }

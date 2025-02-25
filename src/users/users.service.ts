@@ -13,7 +13,7 @@ export class UsersService {
   ) {}
 
   async create(newUser: UserDto) {
-    const userExists = await this.findByEmailOrUsername(
+    const userExists = await this.findByEmail(
       newUser.email,
       newUser.usernameGitHub,
     );
@@ -45,7 +45,7 @@ export class UsersService {
     return { id, name, email, usernameGitHub };
   }
 
-  async findByEmailOrUsername(
+  async findByEmail(
     email: string,
     usernameGitHub?: string,
   ): Promise<UserEntity | undefined> {
