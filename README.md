@@ -19,6 +19,24 @@ A API To-Do List permite gerenciar tarefas com operações CRUD (criação, leit
 $ npm install -g @nestjs/cli
 ```
 
+### Instalação do Node.js
+
+Para executar a API To-Do List, é necessário ter o Node.js instalado na versão **18 ou superior**. Siga os passos abaixo para instalar o Node.js no seu sistema:
+
+1. **Baixar o Instalador**:
+   - Acesse a [página de download do Node.js](https://nodejs.org/en/download/) e escolha a versão recomendada para a maioria dos usuários (LTS) ou a versão mais recente.
+
+2. **Executar o Instalador**:
+   - Após o download, execute o instalador e siga as instruções na tela. Certifique-se de marcar a opção que adiciona o Node.js ao PATH.
+
+3. **Verificar a Instalação**:
+   - Após a instalação, abra o terminal ou Prompt de Comando e execute os seguintes comandos para verificar se o Node.js e o npm (gerenciador de pacotes do Node.js) foram instalados corretamente:
+     ```bash
+     node -v
+     npm -v
+     ```
+
+
 ### 2️⃣ Clonar ou Download o Repositório
 ```bash
 $ git clone https://github.com/chrystophermedeiros/api-todolist.git
@@ -160,6 +178,7 @@ Certifique-se de instalar essas extensões para um desenvolvimento mais eficient
 ## 🛠 Tecnologias Utilizadas
 
 ![NestJS](https://img.shields.io/badge/NestJS-E0234E?style=for-the-badge&logo=nestjs&logoColor=white)
+![Node.js](https://img.shields.io/badge/Node.js-brightgreen?style=for-the-badge&logo=node.js&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
 ![SQLite](https://img.shields.io/badge/SQLite-003B57?style=for-the-badge&logo=sqlite&logoColor=white)
 ![TypeORM](https://img.shields.io/badge/TypeORM-FF5733?style=for-the-badge)
