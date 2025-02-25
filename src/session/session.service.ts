@@ -13,12 +13,11 @@ export class SessionService {
     private readonly jwtservice: JwtService,
     private readonly configService: ConfigService,
   ) {
-    this.jwtExpirationTimeSeconds = this.configService.get<number>(
-      'JWT_EXPIRATION'
-    ) ?? 28800;
+    this.jwtExpirationTimeSeconds =
+      this.configService.get<number>('JWT_EXPIRATION') ?? 28800;
   }
 
-  async singIn(email: string, password: string): Promise<SessionResponseDto>  {
+  async singIn(email: string, password: string): Promise<SessionResponseDto> {
     const foundUser = await this.userService.findByEmailOrUsername(email);
 
     if (!foundUser || !bcryptCompare(password, foundUser.passwordHash)) {
@@ -28,6 +27,10 @@ export class SessionService {
     const payload = { sub: foundUser.id, email: foundUser.email };
     const token = this.jwtservice.sign(payload);
 
-    return { token, expiresIn: this.jwtExpirationTimeSeconds, userId: foundUser.id };
+    return {
+      token,
+      expiresIn: this.jwtExpirationTimeSeconds,
+      userId: foundUser.id,
+    };
   }
 }

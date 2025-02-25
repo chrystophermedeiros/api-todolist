@@ -2,23 +2,21 @@ import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({ name: 'task' })
 export class TaskEntity {
-
   @PrimaryGeneratedColumn('uuid')
   id?: string;
 
-  @Column({ type: 'uuid', name: 'user_id'})
+  @Column({ type: 'uuid', name: 'user_id' })
   userId: string;
-   
-  @Column({ type: 'varchar'})
+
+  @Column({ type: 'varchar' })
   title: string;
 
-  @Column({ type: 'varchar'})
+  @Column({ type: 'varchar' })
   description: string;
 
-  @Column({ type: 'varchar'})
+  @Column({ type: 'varchar' })
   status: string;
 
-  @Column({ type: 'datetime', name: 'expiration_date'})
+  @Column({ type: 'datetime', name: 'expiration_date' })
   expirationDate: Date;
-  
 }

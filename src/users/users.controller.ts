@@ -1,13 +1,24 @@
-import { Body, Controller, Post, HttpException, HttpStatus } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Post,
+  HttpException,
+  HttpStatus,
+  Get,
+  UseGuards,
+  Headers,
+} from '@nestjs/common';
 import { UsersService } from './users.service';
-import { UserDto } from './user.dto';
-import { UserEntity } from 'src/db/entites/user.entity';
+import { FindUserByIdDto, UserDto } from './user.dto';
+import { SessionGuard } from 'src/session/session.guard';
+import { ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
+  @ApiOperation({ summary: 'Criação de um novo usuário' })
   async create(@Body() user: UserDto) {
     try {
       const createdUser = await this.usersService.create(user);
@@ -20,14 +31,32 @@ export class UsersController {
         throw error;
       }
       throw new HttpException(
-        { message: 'Erro ao criar usuário', error: error.message },
+        { message: 'Erro ao criar usuário' },
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
   }
+  @UseGuards(SessionGuard)
+  @ApiBearerAuth('token')
+  @Get('findById')
+  @ApiOperation({ summary: 'Busca um usuário pelo ID' })
+  async findById(@Headers() findUserByIdDto: FindUserByIdDto) {
+    const user = await this.usersService.findById(findUserByIdDto.id);
 
-  @Post('findById')
-  async findById(@Body() id: string): Promise<UserEntity | undefined> {
-    return this.usersService.findById(id);
+    if (!user) {
+      throw new HttpException(
+        { message: 'Usuário não encontrado' },
+        HttpStatus.NOT_FOUND,
+      );
+    }
+
+    return {
+      message: 'Usuário encontrado com sucesso',
+      user: {
+        id: user.id,
+        name: user.name,
+        usernameGitHub: user.usernameGitHub,
+      },
+    };
   }
 }

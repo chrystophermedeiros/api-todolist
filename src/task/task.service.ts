@@ -1,5 +1,10 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { FindAllParameters, TaskDto, TaskStatusEnum } from './task.dto';
+import {
+  FindAllParameters,
+  TaskDto,
+  TaskStatusEnum,
+  TaskUpdateDto,
+} from './task.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TaskEntity } from 'src/db/entites/task.entity';
 import { Repository, FindOptionsWhere, Like } from 'typeorm';
@@ -18,9 +23,7 @@ export class TaskService {
       where: { title: task.title, userId: task.userId },
     });
     if (existingTask) {
-      throw {
-        message: 'Cada usuário só pode criar um título único.',
-      };
+      throw new Error('Cada usuário só pode criar um título único.');
     }
 
     const taskToSave: TaskEntity = {
@@ -84,17 +87,21 @@ export class TaskService {
     return tasksFound.map((taskEntity) => this.mapEntityToDto(taskEntity));
   }
 
-  async update(id: string, task: TaskDto): Promise<TaskDto> {
+  async update(
+    id: string,
+    task: TaskUpdateDto,
+    userId: string,
+  ): Promise<TaskDto> {
     const foundTask = await this.taskRepository.findOne({ where: { id } });
 
     if (!foundTask) {
       throw new HttpException(
-        `Task with id ${id} not found`,
+        `Task de id: ${id} não encotrada`,
         HttpStatus.NOT_FOUND,
       );
     }
 
-    if (foundTask.userId !== task.userId) {
+    if (foundTask.userId !== userId) {
       throw new HttpException(
         `Você não tem permissão para editar esta tarefa`,
         HttpStatus.FORBIDDEN,
@@ -155,7 +162,7 @@ export class TaskService {
     };
   }
 
-  private mapDtoToEntity(taskDto: TaskDto): Partial<TaskEntity> {
+  private mapDtoToEntity(taskDto: TaskUpdateDto): Partial<TaskEntity> {
     return {
       title: taskDto.title,
       description: taskDto.description,
