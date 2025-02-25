@@ -14,12 +14,7 @@ A API To-Do List permite gerenciar tarefas com operações CRUD (criação, leit
 
 ## 🚀 Instalação e Configuração
 
-### 1️⃣ Instalar o NestJS CLI
-```bash
-$ npm install -g @nestjs/cli
-```
-
-### Instalação do Node.js
+### 1️⃣ Instalação do Node.js
 
 Para executar a API To-Do List, é necessário ter o Node.js instalado na versão **18 ou superior**. Siga os passos abaixo para instalar o Node.js no seu sistema:
 
@@ -36,8 +31,12 @@ Para executar a API To-Do List, é necessário ter o Node.js instalado na versã
      npm -v
      ```
 
+### 2️⃣ Instalar o NestJS CLI
+```bash
+$ npm install -g @nestjs/cli
+```
 
-### 2️⃣ Clonar ou Download o Repositório
+### 3️⃣ Clonar ou Download o Repositório
 ```bash
 $ git clone https://github.com/chrystophermedeiros/api-todolist.git
 ```
@@ -51,12 +50,12 @@ $ https://github.com/chrystophermedeiros/api-todolist/archive/refs/heads/main.zi
 $ cd api-todolist
 ```
 
-### 3️⃣ Instalar as Dependências
+### 4️⃣ Instalar as Dependências
 ```bash
 $ npm install
 ```
 
-### 4️⃣ Instalar o SQLite
+### 5️⃣ Instalar o SQLite
 
 - **Windows**:
 ### Instalação do SQLite no Windows
@@ -90,21 +89,21 @@ Para instalar o SQLite no Windows, siga os passos abaixo:
   brew install sqlite3
   ```
 
-### 5️⃣ Banco de Dados Pré-configurado
+### 6️⃣ Banco de Dados Pré-configurado
 Já existe um banco de dados SQLite no caminho `src/db/todolist.db` contendo um usuário e uma tarefa cadastrada.
 
 - **Usuário Padrão:**
   - **Email:** teste@gmail.com
   - **Senha:** 12345678
 
-### 6️⃣ Configurar Variáveis de Ambiente
+### 7️⃣ Configurar Variáveis de Ambiente
 Renomeie o arquivo `.env.example` para `.env`:
 ```bash
 $ mv .env.example .env
 ```
 O arquivo já contém os valores corretos para facilitar a configuração ou se desejar pode ficar a vontade para modificar.
 
-### 7️⃣ Rodar Aplicação
+### 8️⃣ Rodar Aplicação
 ```bash
 # Modo desenvolvimento
 $ npm run start:dev
@@ -116,7 +115,7 @@ $ npm run start:debug
 $ npm run start
 ```
 
-### 8️⃣ Rodar Migrations (se necessário)
+### 9️⃣ Rodar Migrations (se necessário)
 ```bash
 $ npm run migration:run
 ```
