@@ -11,7 +11,7 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export enum TaskStatusEnum {
   PENDING = 'PENDENTE',
-  DONE = 'CONClUIDA',
+  DONE = 'CONCLUIDA',
 }
 export class TaskDto {
   @IsUUID()
@@ -45,23 +45,26 @@ export class TaskDto {
 }
 
 export class TaskUpdateDto {
+  @IsOptional()
   @IsString()
   @MinLength(3)
   @MaxLength(255)
   @ApiPropertyOptional()
   title?: string;
 
+  @IsOptional()
   @IsString()
   @MinLength(5)
   @MaxLength(510)
   @ApiPropertyOptional()
   description?: string;
 
-  @IsEnum(TaskStatusEnum)
   @IsOptional()
+  @IsEnum(TaskStatusEnum)
   @ApiPropertyOptional()
   status?: TaskStatusEnum;
 
+  @IsOptional()
   @IsDateString()
   @ApiPropertyOptional()
   expirationDate?: Date;

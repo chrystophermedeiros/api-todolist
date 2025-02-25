@@ -18,7 +18,7 @@ export class SessionService {
   }
 
   async singIn(email: string, password: string): Promise<SessionResponseDto> {
-    const foundUser = await this.userService.findByEmailOrUsername(email);
+    const foundUser = await this.userService.findByEmail(email);
 
     if (!foundUser || !bcryptCompare(password, foundUser.passwordHash)) {
       throw new UnauthorizedException('Invalid credentials');
@@ -31,6 +31,12 @@ export class SessionService {
       token,
       expiresIn: this.jwtExpirationTimeSeconds,
       userId: foundUser.id,
+      use: {
+        id: foundUser.id,
+        email: foundUser.email,
+        name: foundUser.name,
+        usernameGitHub: foundUser.usernameGitHub,
+      },
     };
   }
 }
