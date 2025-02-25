@@ -22,10 +22,14 @@ $ npm install -g @nestjs/cli
 ### 2️⃣ Clonar ou Download o Repositório
 ```bash
 $ git clone https://github.com/chrystophermedeiros/api-todolist.git
+```
 
-Download: 
+Download:
+```bash
 $ https://github.com/chrystophermedeiros/api-todolist/archive/refs/heads/main.zip
+```
 
+```bash
 $ cd api-todolist
 ```
 
