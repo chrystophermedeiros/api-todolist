@@ -36,9 +36,18 @@ Para executar a API To-Do List, é necessário ter o Node.js instalado na versã
 $ npm install -g @nestjs/cli
 ```
 
-### 3️⃣ Clonar ou Download o Repositório
+### 3️⃣ Clonar ou Download do Repositório
 ```bash
 $ git clone https://github.com/chrystophermedeiros/api-todolist.git
+```
+
+Depois que clonar digite api-todolist para entrar na pasta: 
+```bash
+$ cd api-todolist
+```
+
+```bash
+$ cd api-todolist
 ```
 
 Download:
@@ -46,9 +55,7 @@ Download:
 $ https://github.com/chrystophermedeiros/api-todolist/archive/refs/heads/main.zip
 ```
 
-```bash
-$ cd api-todolist
-```
+Depois que baixar extrai o arquivo na pasta desejada e logo em seguida abra com VSCode
 
 ### 4️⃣ Instalar as Dependências
 ```bash
