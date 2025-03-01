@@ -23,7 +23,10 @@ export class TaskService {
       where: { title: task.title, userId: task.userId },
     });
     if (existingTask) {
-      throw new Error('Cada usuário só pode criar um título único.');
+      throw new HttpException(
+        'Cada usuário só pode criar um título único.',
+        HttpStatus.CONFLICT, // Código 409 - Conflito
+      );
     }
 
     const taskToSave: TaskEntity = {
