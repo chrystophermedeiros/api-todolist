@@ -108,9 +108,25 @@ Renomeie o arquivo `.env.example` para `.env`:
 ```bash
 $ mv .env.example .env
 ```
-O arquivo já contém os valores corretos para facilitar a configuração ou se desejar pode ficar a vontade para modificar.
+O arquivo já contém os valores de exemplo para facilitar a configuração ou se desejar pode ficar a vontade para modificar.
 
-### 8️⃣ Rodar Aplicação
+### 8️⃣ Configurar Cors para sites
+No arquivo manin.js ajuste as configurações abaixo conforme desejar:
+
+```bash
+app.enableCors({
+    origin: [
+      'http://localhost:3000',
+      'http://192.168.0.0:3000',
+      'https://meusite.com',
+    ],
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    allowedHeaders: 'Content-Type, Authorization, UserId',
+    credentials: true,
+  });
+```
+
+### 9️⃣ Rodar Aplicação
 ```bash
 # Modo desenvolvimento
 $ npm run start:dev
@@ -122,7 +138,7 @@ $ npm run start:debug
 $ npm run start
 ```
 
-### 9️⃣ Rodar Migrations (se necessário)
+### 🔟 Rodar Migrations (se necessário)
 ```bash
 $ npm run migration:run
 ```
