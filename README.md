@@ -112,6 +112,8 @@ O arquivo já contém os valores de exemplo para facilitar a configuração ou s
 
 ### 8️⃣ Configurar Cors para sites
 No arquivo manin.js ajuste as configurações abaixo conforme desejar:
+
+```bash
 app.enableCors({
     origin: [
       'http://localhost:3000',
@@ -122,6 +124,7 @@ app.enableCors({
     allowedHeaders: 'Content-Type, Authorization, UserId',
     credentials: true,
   });
+```
 
 ### 9️⃣ Rodar Aplicação
 ```bash
