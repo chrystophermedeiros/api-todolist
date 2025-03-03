@@ -11,7 +11,7 @@ export class LoginDto {
   password: string;
 }
 
-export class SessionResponseDto {
+export class AuthResponseDto {
   @ApiProperty()
   token: string;
 
@@ -21,5 +21,5 @@ export class SessionResponseDto {
   @ApiProperty()
   userId: string;
 
-  use: { id: string; name: string; usernameGitHub: string; email: string };
+  user: { id: string; name: string; usernameGitHub: string; email: string };
 }

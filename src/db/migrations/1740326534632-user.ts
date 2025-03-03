@@ -9,6 +9,8 @@ export class User1740326534632 implements MigrationInterface {
                 password_hash varchar(255) NOT NULL,
                 username_github varchar(100) NOT NULL,
                 email varchar(255) NOT NULL,
+                created_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                updated_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
                 CONSTRAINT user_pk_id PRIMARY KEY (id),
                 CONSTRAINT user_un_email UNIQUE (email),
                 CONSTRAINT user_un_username_github UNIQUE (username_github)  

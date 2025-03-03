@@ -22,7 +22,7 @@ interface CustomRequest extends Request {
 }
 
 @Injectable()
-export class SessionGuard implements CanActivate {
+export class AuthGuard implements CanActivate {
   private jwtSecret: string | undefined;
 
   constructor(
