@@ -25,7 +25,7 @@ export class TaskService {
     if (existingTask) {
       throw new HttpException(
         'Cada usuário só pode criar um título único.',
-        HttpStatus.CONFLICT, // Código 409 - Conflito
+        HttpStatus.CONFLICT,
       );
     }
 

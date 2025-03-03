@@ -9,11 +9,11 @@ async function bootstrap() {
   app.enableCors({
     origin: [
       'http://localhost:3000',
-      'http://192.168.0.9:3000',
+      'http://192.168.0.0:3000',
       'https://meusite.com',
     ],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    allowedHeaders: 'Content-Type, Authorization, x-user-id',
+    allowedHeaders: 'Content-Type, Authorization, UserId',
     credentials: true,
   });
 
