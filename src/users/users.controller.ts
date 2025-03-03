@@ -10,8 +10,9 @@ import {
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { FindUserByIdDto, UserDto } from './user.dto';
-import { SessionGuard } from 'src/session/session.guard';
+
 import { ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
+import { AuthGuard } from 'src/auth/auth.guard';
 
 @Controller('users')
 export class UsersController {
@@ -36,7 +37,7 @@ export class UsersController {
       );
     }
   }
-  @UseGuards(SessionGuard)
+  @UseGuards(AuthGuard)
   @ApiBearerAuth('token')
   @Get('findById')
   @ApiOperation({ summary: 'Busca um usuário pelo ID' })

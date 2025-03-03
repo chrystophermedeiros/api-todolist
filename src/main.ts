@@ -9,7 +9,7 @@ async function bootstrap() {
   app.enableCors({
     origin: [
       'http://localhost:3000',
-      'http://192.168.0.0:3000',
+      'http://192.168.0.9:3000',
       'https://meusite.com',
     ],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
@@ -23,7 +23,6 @@ async function bootstrap() {
       'A API To-Do List permite gerenciar tarefas com operações CRUD (criação, leitura, atualização e exclusão). Os usuários podem adicionar, editar, listar e remover tarefas de forma simples e eficiente',
     )
     .setVersion('1.0')
-    .addTag('APIs')
     .addBearerAuth(
       {
         type: 'http',

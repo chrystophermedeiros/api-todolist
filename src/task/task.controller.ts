@@ -19,11 +19,12 @@ import {
   TaskUpdateDto,
 } from './task.dto';
 import { TaskService } from './task.service';
-import { SessionGuard } from 'src/session/session.guard';
+
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { AuthGuard } from 'src/auth/auth.guard';
 
 @ApiTags('task')
-@UseGuards(SessionGuard)
+@UseGuards(AuthGuard)
 @ApiBearerAuth('token')
 @Controller('task')
 export class TaskController {
